@@ -99,5 +99,5 @@ Kalite kapisi gecilmeden kod merge edilmez. Istisna yok.
 | **KOSULLU GECTI** | Minor sorunlar var, paralel duzeltilir |
 | **KALDI** | Blocker/major sorun var, rework gerekli |
 
-Test stratejisi, mock kurallari ve detayli test standartlari icin `test/CLAUDE.md` dosyasina basvur.
+Test stratejisi, mock kurallari ve detayli test standartlari icin test kurallarina basvur (otomatik yuklu).
 Stack-spesifik arac ve kutuphane detaylari icin `stack/` klasorune basvur.

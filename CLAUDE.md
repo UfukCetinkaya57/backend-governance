@@ -55,13 +55,13 @@ Ben junior seviyedeyim. Amacin beni memnun etmek degil, hataya dusmemi engelleme
 
 **Normal — diger her sey (varsayilan)**
 
-Gorev-kademe eslestirme tablosu ve detay kurallar: `backend-governance/surec/CLAUDE.md`
+Gorev-kademe eslestirme tablosu ve detay kurallar: surec kurallari (otomatik yuklu — `.claude/rules/surec.md`)
 
 ---
 ## Feedback Dongusu
 
 Subagent'lar birbirleriyle direkt konusamaz. Tum iletisim Team Lead uzerinden gecer. Herhangi bir agent sorun buldugunda, dongu bitmez — sorun duzeltilene kadar tekrar eder. **Max 3 dongu.** 3. dongude hala sorun varsa → kullaniciya raporla, karar iste.
-Detay akislar (kademe bazli diagramlar, handoff kurallari): `backend-governance/surec/CLAUDE.md`
+Detay akislar (kademe bazli diagramlar, handoff kurallari): surec kurallari (otomatik yuklu — `.claude/rules/surec.md`)
 
 ---
 ## Code Review (Team Lead Rolu)
@@ -91,10 +91,7 @@ Buyuk / riskli review'larda `architect` da cagrilir.
 ---
 ## Git / Commit Kurallari
 
-- `Co-Authored-By` satiri **EKLENMEZ**
-- Governance dosyalari (`.claude/`, `CLAUDE.md`, `backend-governance/`, `proje/`) **commit'e dahil edilmez**
-- Commit mesajlari **insan yazmis gibi** olmali. AI ciktisi seklinde yazmak YASAK.
-- Hassas dosyalar (`.env`, credentials, secret) commit'lenmez
+Commit islemleri `/commit` skill'i ile yapilir. Tum kurallar (governance dosya haric tutma, hassas dosya engelleme, BOM kontrolu, mesaj formati) skill icinde tanimlidir. Hook (`pre-commit-guard.sh`) ek guvenlik agi olarak otomatik calisir.
 
 ---
 ## Zorunlu Calisma Akisi (ATLANAMAZ)
@@ -123,13 +120,14 @@ harden tetikleyicileri = Tam kademe kriterleri (yukarida). Her zaman raporla: se
 ---
 ## Governance Klasoru & Dosya Referanslari
 
-Governance dosyalari varsayilan olarak `backend-governance/` klasorundedir.
-Backend: `backend/CLAUDE.md` | API: `api/CLAUDE.md` | Veri: `veri/CLAUDE.md`
-Guvenlik: `guvenlik/CLAUDE.md` | Test: `test/CLAUDE.md` | Kalite: `kalite/CLAUDE.md`
-Mimari: `mimari/CLAUDE.md` | Karar: `karar/CLAUDE.md` | Operasyon: `operasyon/CLAUDE.md`
-Surec: `surec/CLAUDE.md` | Proje Kesfi: `surec/proje-kesfi.md` | Deployment: `surec/deployment.md`
+### Otomatik Yuklenen Kurallar (`.claude/rules/`)
+Bu dosyalar her oturumda otomatik yuklenir — agent'larin ayrica okumasina gerek yoktur:
+`api.md` | `backend.md` | `context.md` | `guvenlik.md` | `kalite.md` | `karar.md` | `mimari.md` | `operasyon.md` | `qa.md` | `stack.md` | `surec.md` | `test.md` | `veri.md`
 
-Ayrica tasindi: Performans hedefleri → `operasyon/CLAUDE.md` | Tamamlanma protokolu detay → `surec/CLAUDE.md` | Kural evrimi → `surec/CLAUDE.md`
+### Manuel Okunan Dosyalar
+Stack-spesifik: `stack/dotnet.md` | `stack/nodejs.md` | `stack/laravel.md`
+Surec dokumanlari: `surec/proje-kesfi.md` | `surec/deployment.md`
+Proje profilleri: `proje/` klasoru
 
 ---
 ## Durdurma Yetkisi & Escalation

@@ -100,4 +100,4 @@ Neden bu secenegin secildigi.
 - Premature Abstraction: Tek kullanim icin interface/abstract sinif
 - Config Sprawl: Konfigurasyonun kontrolsuz dagilmasi
 
-Karar verme cercevesi ve YAGNI kontrolleri icin bkz. `karar/CLAUDE.md`.
+Karar verme cercevesi ve YAGNI kontrolleri icin bkz. karar kurallari (otomatik yuklu).

@@ -186,6 +186,6 @@ Her seyi test etmek mumkun degilse, risk matrisi uygula:
 
 ---
 
-Test disiplini ve test yapisi (Arrange-Act-Assert) icin bkz. `test/CLAUDE.md`.
-API standartlari ve response formatlari icin bkz. `api/CLAUDE.md`.
+Test disiplini ve test yapisi (Arrange-Act-Assert) icin bkz. test kurallari (otomatik yuklu).
+API standartlari ve response formatlari icin bkz. api kurallari (otomatik yuklu).
 Stack-spesifik test araclari icin bkz. `stack/` klasoru.

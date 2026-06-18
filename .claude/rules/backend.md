@@ -59,7 +59,7 @@ Genel prensipler (stack-spesifik detaylar `stack/` dosyasinda):
 - Sadece gerekli alanlari cek (SELECT * YASAK, projection kullan)
 - N+1 onlemek icin eager loading / join kullan
 - Buyuk veri setlerinde pagination zorunlu
-- Detaylar: bkz. `veri/CLAUDE.md`
+- Detaylar: bkz. veri kurallari (otomatik yuklu)
 
 ---
 
@@ -69,7 +69,7 @@ Genel prensipler (stack-spesifik detaylar `stack/` dosyasinda):
 - Hata formati tutarli (proje genelinde tek format)
 - AuthN != AuthZ mutlaka ayri kontrol et
 - Idempotency key destegi (POST endpoint'leri icin)
-- Detaylar: bkz. `api/CLAUDE.md`, guvenlik: bkz. `guvenlik/CLAUDE.md`
+- Detaylar: bkz. api ve guvenlik kurallari (otomatik yuklu)
 
 ---
 
@@ -87,4 +87,4 @@ Genel prensipler (stack-spesifik detaylar `stack/` dosyasinda):
 - Service -> unit test
 - API endpoint -> integration test
 - Edge-case'leri ozellikle uret
-- Detaylar: bkz. `test/CLAUDE.md`, stack-spesifik araclar: `stack/` dosyasina bak
+- Detaylar: bkz. test kurallari (otomatik yuklu), stack-spesifik araclar: `stack/` dosyasina bak

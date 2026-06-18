@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>Medium Makale</title></head>
+<body>
+
+<h1>Claude Code'u Tek Başına Kullanmayı Bıraktım — Artık O Benim Team Lead'im</h1>
+
+<h2>Sorun: AI Kod Yazıyor, Ama Kim Kontrol Ediyor?</h2>
+
+<p>Claude Code'a "şu endpoint'i yaz" diyorsun, yazıyor. "Şu bug'ı düzelt" diyorsun, düzeltiyor. Hızlı, etkili, etkileyici.</p>
+
+<p>Ama bir süre sonra fark ediyorsun:</p>
+
+<ul>
+<li>Güvenlik kontrolünü <strong>sen</strong> yapıyorsun (ya da unutuyorsun)</li>
+<li>Kod kalitesini <strong>sen</strong> değerlendiriyorsun (ya da "çalışıyor, tamam" diyorsun)</li>
+<li>Mimari kararları <strong>sen</strong> takip ediyorsun (ya da her seferinde farklı bir pattern çıkıyor)</li>
+<li>Auth endpoint'ine injection açığı girmiş mi? <strong>Sen</strong> bakacaksın</li>
+</ul>
+
+<p>Kısacası Claude hızlı bir junior developer gibi çalışıyor — ne dersen yapıyor ama kimse arkasından kontrol etmiyor. Gerçek bir takımda bu kabul edilemez. Peki neden AI ile çalışırken kabul ediyoruz?</p>
+
+<h2>Soru: Ya Claude Kendini Kontrol Edebilseydi?</h2>
+
+<p>Bu soruyu kendime sordum ve cevabı inşa ettim.</p>
+
+<p>Claude Code'un sub-agent özelliğini keşfettiğimde bir şey fark ettim: Claude'a sadece "kod yaz" demek yerine, onu bir <strong>Team Lead</strong> gibi çalıştırabilirdim. Kodu kendisi yazmak yerine, uzman agent'lara delege edebilir, sonuçları kontrol edebilir ve bana rapor verebilirdi.</p>
+
+<p>Ortaya çıkan şey: <strong>claude-code-governance</strong> — Claude Code'u yapılandırılmış bir mühendislik takımına dönüştüren açık kaynak bir governance framework'ü.</p>
+
+<h2>Nasıl Çalışıyor?</h2>
+
+<p>Framework'ü projenize eklediğinizde Claude artık genel amaçlı bir asistan olarak çalışmıyor. Tanımlanmış bir rolü var: <strong>görevi anla, doğru pipeline'ı seç, doğru agent'a delege et, çıktıyı doğrula.</strong></p>
+
+<h3>5 Uzman Agent</h3>
+
+<p>Her biri farklı bir uzmanlık alanına sahip:</p>
+
+<ul>
+<li><strong>backend-developer</strong> — Kodu yazan agent. Endpoint, service, migration, validation.</li>
+<li><strong>security-reviewer</strong> — Güvenlik taraması yapan agent. Auth, injection, CORS, brute force.</li>
+<li><strong>quality-gate</strong> — 11 noktalık kalite kontrol listesiyle kodu değerlendiren agent.</li>
+<li><strong>architect</strong> — Mimari kararları, YAGNI ihlallerini ve gereksiz karmaşıklığı yakalayan agent.</li>
+<li><strong>devops</strong> — Deployment, Docker, monitoring, logging işlerini yöneten agent.</li>
+</ul>
+
+<h3>3 Kademeli Pipeline</h3>
+
+<p>Her görev aynı ağırlıkta değil. Bir config değişikliği ile bir auth sistemi aynı pipeline'dan geçmemeli. Bu yüzden 3 kademe var:</p>
+
+<p><strong>Hafif</strong> — Tek dosya değişikliği, güvenlik yüzeyi yok. Sadece backend-developer yazar, Team Lead onaylar. Bitti.</p>
+
+<p><strong>Normal</strong> — Standart feature'lar. Backend-developer yazar, Team Lead review eder, quality-gate kontrol eder. Varsayılan yol bu.</p>
+
+<p><strong>Tam</strong> — Auth, ödeme, migration, public API. Backend-developer yazar, security-reviewer inceler, Team Lead review eder, quality-gate tam kontrol çalıştırır. Eksik varsa döngü baştan başlar.</p>
+
+<p>Kademe seçimi otomatik. Claude görevi analiz edip uygun kademeyi kendisi belirliyor.</p>
+
+<h3>Feedback Döngüsü</h3>
+
+<p>Agent'lar birbirleriyle konuşamaz. Tüm iletişim Team Lead (Claude) üzerinden geçer. Security-reviewer bir sorun bulduysa, backend-developer'a "şunu düzelt" diye geri gider. Düzeltilir, tekrar review edilir. Maksimum 3 döngü — çözülmezse bana (insana) eskalasyon yapılır.</p>
+
+<p>Bu, gerçek bir mühendislik takımının çalışma şeklinin aynısı.</p>
+
+<h2>Gerçek Bir Örnek</h2>
+
+<p>Diyelim ki Claude Code'a şunu söyledim:</p>
+
+<blockquote>"Kullanıcı profil güncelleme endpoint'i ekle"</blockquote>
+
+<p>Claude (Team Lead olarak) şu adımları izliyor:</p>
+
+<ol>
+<li>Görevi analiz eder — Auth içeriyor mu? Evet, kullanıcı kendi profilini güncelliyor. <strong>Harden mode aktif.</strong></li>
+<li>Pipeline kademesi: <strong>Tam</strong> (auth yüzeyi var)</li>
+<li><code>backend-developer</code>'a delege eder — Controller, service, validation yazılır</li>
+<li><code>security-reviewer</code> inceler — IDOR açığı var mı? Kullanıcı başkasının profilini güncelleyebilir mi? Input validation yeterli mi?</li>
+<li>Team Lead review eder — İş mantığı doğru mu? Edge case'ler düşünülmüş mü?</li>
+<li><code>quality-gate</code> çalışır — 11 noktalık kontrol listesi</li>
+<li>Bana rapor sunar — Ne yapıldı, hangi kontroller geçti, kalan riskler neler</li>
+</ol>
+
+<p>Ben sadece görevi verdim. Pipeline'ı, agent seçimini, güvenlik kontrolünü Claude kendisi yönetti.</p>
+
+<h2>Neden "Prompt Engineering" Yetmiyor?</h2>
+
+<p>"Ama ben de Claude'a 'güvenliğe dikkat et' diyorum" diyebilirsiniz. Fark şu:</p>
+
+<p><strong>Prompt ile:</strong> "Güvenliğe dikkat et" diyorsunuz → Claude kodu yazarken aklında tutuyor (belki) → Tek bir bakış açısı</p>
+
+<p><strong>Governance ile:</strong> Kod yazıldıktan sonra ayrı bir agent güvenlik review yapıyor → Farklı bakış açısı, farklı kontrol listesi → Sorun bulunursa düzeltme döngüsü başlıyor</p>
+
+<p>Birincisi "dikkat et" demek. İkincisi <strong>sistematik kontrol</strong>. İnsan takımlarında da "dikkat et" demek yerine code review süreci var — aynı mantık.</p>
+
+<h2>4 Mühendislik Modu</h2>
+
+<p>Her görev aynı hassasiyette ele alınmıyor:</p>
+
+<ul>
+<li><strong>explore</strong> — Deneysel çalışma, PoC. Kalite kontrolü gevşek.</li>
+<li><strong>build</strong> — Standart feature geliştirme. Normal kontrol. Varsayılan mod.</li>
+<li><strong>harden</strong> — Auth, ödeme, migration, güvenlik. Sıkı kontrol, tam pipeline zorunlu.</li>
+<li><strong>incident</strong> — Canlı hata, veri kaybı riski. Kritik mod.</li>
+</ul>
+
+<p>Modu belirtmezseniz Claude otomatik seçer. Auth ile ilgili bir şey söylerseniz harden'a geçer. "Production'da hata var" derseniz incident moduna geçer.</p>
+
+<h2>Kurulum 5 Dakika</h2>
+
+<ol>
+<li>Repo'yu klonlayın</li>
+<li>Projenizden symlink oluşturun</li>
+<li>Çalışmaya başlayın</li>
+</ol>
+
+<pre><code>git clone https://github.com/UfukCetinkaya57/claude-code-governance.git
+
+# Linux/Mac
+ln -s /path/to/claude-code-governance /path/to/your-project/backend-governance
+
+# Windows
+mklink /D "C:\proje\backend-governance" "C:\claude-code-governance"</code></pre>
+
+<p>Claude Code projenizi açtığında governance dosyalarını otomatik algılar ve Team Lead olarak çalışmaya başlar.</p>
+
+<h2>Kim İçin?</h2>
+
+<ul>
+<li><strong>Solo geliştiriciler</strong> — Arkanda review yapacak biri yoksa, Claude o rolü üstleniyor</li>
+<li><strong>Junior geliştiriciler</strong> — Claude seni hatalardan koruyor, her adımda neden yapıldığını açıklıyor</li>
+<li><strong>Küçük takımlar</strong> — Dedicated bir security reviewer veya architect tutamıyorsanız, Claude bu rolleri simüle ediyor</li>
+<li><strong>Claude Code kullanan herkes</strong> — Daha yapılandırılmış, daha güvenli, daha kaliteli çıktı istiyorsanız</li>
+</ul>
+
+<h2>Açık Kaynak</h2>
+
+<p>Framework tamamen açık kaynak (MIT lisans). Fork edin, uyarlayın, katkıda bulunun.</p>
+
+<p>Şu an .NET, Node.js ve Laravel için stack profilleri mevcut. Kendi stack'inizi ekleyebilirsiniz.</p>
+
+<p>GitHub: <a href="https://github.com/UfukCetinkaya57/claude-code-governance">https://github.com/UfukCetinkaya57/claude-code-governance</a></p>
+
+<p><em>Claude Code'u sadece "kod yazan bir araç" olarak kullanmak, bir Formula 1 aracını şehir içi trafikte sürmek gibi. Potansiyeli çok daha fazla — sadece doğru yapılandırma gerekiyor.</em></p>
+
+</body>
+</html>

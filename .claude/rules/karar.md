@@ -96,7 +96,7 @@ Yeni bir cozum/pattern/kutuphane onerisi geldiginde:
 ## Karar Dokumantasyonu
 
 Kucuk kararlar: commit mesajinda veya PR aciklamasinda belirt.
-Buyuk kararlar: ADR yaz (bkz. `mimari/CLAUDE.md`).
+Buyuk kararlar: ADR yaz (bkz. mimari kurallari — otomatik yuklu).
 
 Buyuk karar kriterleri:
 - Geri donusu 1 saatten fazla suruyorsa

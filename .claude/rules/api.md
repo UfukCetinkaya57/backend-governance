@@ -56,7 +56,7 @@ Proje genelinde tek format sec, karistirma.
 }
 ```
 
-Karar: Proje basinda ADR ile belirle (bkz. `mimari/CLAUDE.md`).
+Karar: Proje basinda ADR ile belirle (bkz. mimari kurallari).
 
 ---
 

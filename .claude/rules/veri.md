@@ -80,7 +80,7 @@ Full-text search gerekiyorsa: DB'nin native destegini kullan (PostgreSQL tsvecto
 - N+1 onlemek icin eager loading / join kullan
 - Read-only sorgularda change tracking / dirty checking kapat
 - Buyuk join'lerde split query degerlendir
-- Pagination zorunlu (bkz. `api/CLAUDE.md` — offset vs cursor secimi)
+- Pagination zorunlu (bkz. api kurallari — offset vs cursor secimi, otomatik yuklu)
 - Count sorgulari ayri calistir (ana sorguyla karistirma)
 - Raw SQL sadece performans zorunlulugunda, sebebi yorumla
 

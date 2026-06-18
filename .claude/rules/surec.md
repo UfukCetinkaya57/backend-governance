@@ -17,10 +17,10 @@ Planlama -> Tasarim -> Backend -> Test -> Review -> Deployment
 - ADR (mimari karar gerekiyorsa)
 
 ### 3. Backend Gelistirme
-- Migration olusturma (bkz. `veri/CLAUDE.md`)
+- Migration olusturma (bkz. veri kurallari)
 - Endpoint implementasyonu (Controller -> Service -> Repository)
-- Input validation (bkz. `api/CLAUDE.md`)
-- Auth/AuthZ uygulamasi (bkz. `guvenlik/CLAUDE.md`)
+- Input validation (bkz. api kurallari)
+- Auth/AuthZ uygulamasi (bkz. guvenlik kurallari)
 - Error handling
 - Rate limiting
 
@@ -30,7 +30,7 @@ Planlama -> Tasarim -> Backend -> Test -> Review -> Deployment
 - Edge case ve hata senaryolari
 
 ### 5. Review
-- Kalite kapisi kontrolu (bkz. `kalite/CLAUDE.md`)
+- Kalite kapisi kontrolu (bkz. kalite kurallari)
 - Code review
 - Sonuc: ONAYLI / DEGISIKLIK GEREKLI / REDDEDILDI
 

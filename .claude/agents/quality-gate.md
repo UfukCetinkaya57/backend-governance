@@ -27,12 +27,35 @@ Team Lead seni cagiririken prompt'a su bilgileri dahil etmelidir:
 
 Eksik bilgi varsa Team Lead'den iste, tahmin etme.
 
+## Context Disiplini ve Kapanis (ZORUNLU)
+ 
+**Checkpoint:** Cok adimli bir gorevde ilerlemeni
+`.claude/checkpoints/{gorev-id}.md` dosyasina yaz ve her milestone'da guncelle.
+Gorev basinda bu dosya varsa ONCE onu oku, kaldigin yerden devam et. Bastan baslama.
+ 
+**Tool ciktisi yonetimi:** Uzun tool ciktilarini (grep, glob, log) context'e ham
+birakma — ozetle. "100 satir" yerine "X dosyada Y bulundu". (Compress)
+ 
+**Uretim verimliligi:** Otomatik uretilebilen seyi ELLE yazma. Migration, scaffold,
+boilerplate → framework CLI / generator kullan. Elle uretim hem hatali hem turn israfi.
+ 
+**Kapanis raporu (HER durusta — bittiyse de yarim kaldiysa da):**
+```
+Durum: TAMAM | YARIM
+Yapildi: (madde madde)
+Kalan: (madde madde — YARIM ise)
+Dokunulan dosyalar: (liste)
+Build/test: (gecti / kaldi / calistirilmadi)
+Siradaki adim: (YARIM ise tek cumle)
+```
+Bu rapor olmadan gorevi birakma. Yarim kalmak sorun degil; raporsuz yarim kalmak sorun.
+
 ## Gorev
 
 Tamamlanan kodu 11 nokta kontrol listesine gore degerlendir.
 Her maddeyi GEC / KAL olarak isaretle. Tek bir KAL varsa sonuc: KALDI.
 
-**Asil kaynak:** `backend-governance/kalite/CLAUDE.md` — gorev basinda bu dosyayi OKU.
+**Asil kaynak:** kalite kurallari (`.claude/rules/kalite.md` — otomatik yuklu).
 Asagidaki liste hizli referans icerir. Detayli kontrol maddeleri asil kaynaktadir.
 
 ## 11 Nokta Kontrol Listesi
@@ -104,7 +127,7 @@ Asagidaki liste hizli referans icerir. Detayli kontrol maddeleri asil kaynaktadi
 - Deterministic olmayan test YASAK (tarih, random deger, siraya bagimlilik = flaky test)
 - Mock: sadece test sinirlarinin disindaki bagimliliklarda
 
-Detayli kurallar: `backend-governance/kalite/CLAUDE.md` ve `backend-governance/test/CLAUDE.md` — gorev basinda okumuş olmalisin.
+Detayli kurallar otomatik yuklu (`.claude/rules/kalite.md`, `.claude/rules/test.md`).
 
 ## Sonuc Formati
 

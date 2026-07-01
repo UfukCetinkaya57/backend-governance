@@ -35,28 +35,41 @@ Asagidaki dosyalar commit'e ALINMAZ. Staged ise unstage et ve UYAR:
 - `*credentials*`, `*secret*`
 - `*.pem`, `*.key`
 
-### 4. Dosya Encoding Kontrolu
-Tum dosyalar **UTF-8 BOM** formatinda commit edilmeli.
-Commit oncesi degisen dosyalari kontrol et:
+### 4. Dosya Encoding Kontrolu (dosya-tipine gore)
+
+BOM politikasi dosya tipine gore AYRISIR. "Hepsine BOM ekle" YANLIS — config
+dosyalarini kirar (bkz. memory feedback_no_bom_tool_config).
+
+**BOM-LU olmali** (ilk 3 byte EF BB BF):
+- `*.cs`  (.NET / Visual Studio BOM'lu UTF-8 uretir, repo normu)
+
+**BOM-SUZ olmali** (BOM parser'i / araci kirar):
+- `*.yml`, `*.yaml`, `*.json`, `.env`, `.env.*`
+- `Dockerfile`, `docker-compose*.yml`, `Caddyfile`
+- `*.sh`, `*.sql`, `*.csproj`, `*.props`, `*.targets`
+- `*.md` (governance dahil)
+
+Kontrol: `head -c3 <dosya> | od -An -tx1`  (ef bb bf => BOM var)
+
+Duzeltme (tip-ayrimli: .cs'e ekle, config'ten cikar — iki AYRI cagri):
 ```bash
-# BOM kontrolu: dosyanin ilk 3 byte'i EF BB BF olmali
-file --mime-encoding <dosya>
-```
-Eger BOM eksikse, dosyanin basina BOM ekle:
-```bash
-# Python ile BOM ekleme
 python3 -c "
 import sys
-for f in sys.argv[1:]:
-    with open(f, 'rb') as fh:
-        content = fh.read()
-    if not content.startswith(b'\xef\xbb\xbf'):
-        with open(f, 'wb') as fh:
-            fh.write(b'\xef\xbb\xbf' + content)
-        print(f'BOM eklendi: {f}')
-" <degisen-dosyalar>
+mode = sys.argv[1]   # 'add' (.cs icin) veya 'strip' (config icin)
+for f in sys.argv[2:]:
+    c = open(f,'rb').read()
+    has = c.startswith(b'\xef\xbb\xbf')
+    if mode=='add' and not has:
+        open(f,'wb').write(b'\xef\xbb\xbf'+c); print('BOM eklendi:', f)
+    if mode=='strip' and has:
+        open(f,'wb').write(c[3:]); print('BOM cikarildi:', f)
+" add   <degisen .cs dosyalari>
+# ayri cagri config icin:
+# python3 -c "...ayni script..." strip <degisen config dosyalari>
 ```
-**Not:** Binary dosyalar (resim, font, zip vb.) haric tutulur — sadece text dosyalar kontrol edilir.
+**Not:** Binary dosyalar (resim, font, zip) haric. BOM islemi eol'e DOKUNMAZ
+(yalniz ilk 3 byte'a bakar). `.gitattributes` KULLANILMIYOR (bilincli — renormalize
+riski; bu kontrol commit oncesi tek enforcement noktasi).
 
 ### 5. Commit Mesaji Olustur
 - Kullanici mesaj verdiyse ($ARGUMENTS) onu kullan

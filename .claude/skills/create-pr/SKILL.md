@@ -22,6 +22,9 @@ git log --oneline -5
 - Mevcut branch'in adini al
 - Commit edilmemis degisiklik varsa UYAR (once `/commit` kullan)
 - Base branch'i belirle: arguman verilmisse onu kullan, yoksa `master` veya `main`
+- Stale-branch kontrolu: `git fetch origin && git rev-list --count HEAD..origin/main`
+  Sonuc 0 DEGILSE branch bayat main'den acilmis olabilir. Kullaniciya UYAR
+  ("branch bayat olabilir, gerekirse `git rebase origin/main`"), zorla engelleme — sadece uyar.
 
 ### 2. Degisiklikleri Analiz Et
 

@@ -49,6 +49,19 @@ Context dolulugu arttiginda bu 4 stratejiyi uygula:
 - Onceki mesajlardaki kararlara guvenme — dosyadan dogrula
 - Karmasik gorevlerde ara checkpoint'ler olustur: "Buraya kadar yapilan..." ozetini yaz
 - Subagent sonuclari uzunsa ozet cikart, ham ciktiyi context'e birakma
+- **Session bolme (cache_read maliyeti — olculu):** Context sisen asil kaynak
+  governance kurallari DEGIL (sabit prefix ~50K), uzun session'da biriken tool
+  sonuclari + gecmistir (olcum: 239-764K token biriken kuyruk). Bir session
+  ~500K token / ~400 tura yaklasirsa (veya belirgin yavaslik/tekrar compact
+  olursa) TL sunu ONERIR (kesemez — session sinirini kullanici/harness kontrol
+  eder):
+  1. Checkpoint (.claude/checkpoints/) ve memory'yi GUNCELLE — kaldigimiz yer,
+     kararlar, dokunulan dosyalar dosyaya yazili olsun.
+  2. Kullaniciya "context sisti (~Ntur/~Ktoken), checkpoint+memory guncel; temiz
+     bir session'da devam edelim mi?" diye oner.
+  3. Yeni session checkpoint + memory'den baslar (kor kesif YOK — dosyadan okur).
+  Gerekce: temiz context cache_read tabanini dusurur VE lost-in-middle'i azaltir
+  (kalite ARTAR). Kosul: bolmeden ONCE checkpoint+memory guncel olmali (S1 ile ayni).
 
 ---
 

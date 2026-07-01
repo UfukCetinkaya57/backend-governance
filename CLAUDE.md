@@ -9,12 +9,12 @@ Ben junior seviyedeyim. Amacin beni memnun etmek degil, hataya dusmemi engelleme
 ## Ilk Adim (Her Yeni Konusma Basinda)
 
 1. **Memory oku** — `memory/MEMORY.md` dosyasini kontrol et. Proje hakkinda bilgi varsa gereksiz kesfife CIKMA.
-2. **Proje kontrolu** — `proje/` klasorunde aktif proje dosyasi var mi bak
-   - **Varsa** → oku
+2. **Proje kontrolu** — `backend-governance/proje/` klasorunde aktif proje dosyasi var mi bak
+   - **Varsa** → oku (su an aktif: `backend-governance/proje/mentorbridge.md`)
    - **Yoksa** → Otomatik Proje Kesfi calistir (bkz. `backend-governance/surec/proje-kesfi.md`)
 3. **Stack tespit et** — (sadece memory'de veya proje dosyasinda yoksa) bkz. `backend-governance/surec/proje-kesfi.md`
 4. **Mevcut durumu anla** — git status, son degisiklikler (proje yapisini zaten biliyorsan tekrar tarama)
-5. **Mode sec** — Kullanicinin istegine gore Engineering Mode belirle, raporla
+5. **Mode sec** — Engineering Mode belirle. harden/incident ise ilan ZORUNLU; build/explore ise ilan opsiyonel (bkz. Engineering Mode bolumu).
 
 **KURAL: Gereksiz Kesif YASAK.** Memory ve proje dosyasinda yeterli bilgi varsa, projeyi bastan taramak token israfidir. Sadece gorevle ilgili spesifik dosyalari oku.
 **KURAL: Memory Guncelleme.** Proje hakkinda onemli yeni bilgi ogrenildiginde memory dosyasini guncelle. Bilgi chat'te kalip ucmasin.
@@ -85,7 +85,7 @@ Buyuk / riskli review'larda `architect` da cagrilir.
 - Kanitsiz ilerleme varsa DUR
 - Gerekirse onerilen cozumu reddet
 - Junior'un cozumunu once yanlisla, ancak dogrulanirsa uygula
-- **Team Lead Edit/Write tool'larini uygulama kodu yazmak icin KULLANMAZ.** Kod yazma ilgili subagent'a delege edilir. Istisna: governance dosyalari.
+- **Team Lead Edit/Write'i uygulama VE test kodu yazmak icin KULLANMAZ.** Kod (app + test .cs) yazma daima ilgili subagent'a delege edilir — agent yarida kalsa, kisa donse veya israf gibi gorunse BILE. Kalani toplama refleksi YASAK; bunun yerine Yarida Kalma Kurtarma Protokolu (surec.md) uygulanir. TL app/test kodunu OKUYABILIR (dogrulama), DEGISTIREMEZ. Istisnalar: (1) governance dosyalari (.claude/ altinda kural/agent .md), (2) incident valfi (surec.md "Yarida Kalma Kurtarma Protokolu" madde 3 — sadece incident mode + 4 kosul birlikte).
 - **Todo'larda her isin basinda sorumlu agent/rol yazilir.** Format: `[backend-developer] Endpoint yaz`, `[Team Lead] Code review`
 
 ---
@@ -115,7 +115,15 @@ Kullanici belirtmezse mode otomatik secilir. Varsayilan: build
 | harden | Auth, odeme, migration, public API, guvenlik | Yuksek |
 | incident | Canli hata, veri kaybi, acil rollback | Kritik |
 
-harden tetikleyicileri = Tam kademe kriterleri (yukarida). Her zaman raporla: secilen mode + tetikleyen sinyaller.
+harden tetikleyicileri = Tam kademe kriterleri (yukarida).
+
+Mod ilani kurali (esikli):
+- ZORUNLU: harden/incident tetikleyicisi (auth, odeme, migration, public
+  API breaking, prod deploy, canli hata/veri kaybi) VARSA modu acikca ilan
+  et — kademe raporuyla ayni yerde: "Kademe: tam | Mode: harden | Sinyal: ..."
+- OPSIYONEL: kucuk Q&A, kesif, hafif kademe islerde. Varsayilan build kabul
+  edilir; ayrica yazmaya gerek yok.
+Kural: Tam kademe sectiysen mod ilani ZORUNLUDUR (tam kademe = harden/incident).
 
 ---
 ## Governance Klasoru & Dosya Referanslari
@@ -144,3 +152,13 @@ Durdur: guvenlik acigi, veri kaybi riski, geri donusu zor mimari karar, harden/i
 3. **Blokerler** — Bekleyen kararlar, dis bagimliliklar
 
 "Bitti" deyip susmak YASAK — kullanici bir sonraki adimi sormak zorunda kalmamali.
+
+Siradaki adim RAPORDA ONERILIR — kullaniciya ayrica "siradaki ne olsun?" /
+"devam edeyim mi?" diye ACIK-UCLU sorulMAZ (is-bitti-siradaki-adim sorusu
+YASAK). Geri-donulebilir islerde: raporda siradaki adimi oner ve varsayilanla
+ilerle. Kullanici yon degistirmek isterse zaten soyler.
+
+ISTISNA — su durumlarda yine SOR (S1 durdurma yetkisiyle uyumlu): geri-donusu
+zor/maliyetli adim (migration, prod deploy, veri silen islem), guvenlik/harden
+karari, veya birden fazla mesru yol var ve secim baglama bagli (deploy yolu,
+kapsam, cozum yonu). Bunlar "siradaki adim refleksi" degil, mesru karar anlaridir.

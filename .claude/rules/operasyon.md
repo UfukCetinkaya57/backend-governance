@@ -93,6 +93,26 @@ Uc ayak: **Logs + Metrics + Traces**
 - DB migration deployment'tan ONCE ayri adimlarda
 - Deployment sonrasi smoke test zorunlu
 
+### Deploy Izleme (Kilitleyici Polling YASAK)
+
+Deploy/CI runner'da asistandan bagimsiz calisir; izlemek onu hizlandirmaz,
+sadece asistani ve kullaniciyi bekletir. Bu projede staging deploy zaten
+OTOMATIK (workflow_run tetikli) — cogu zaman elle baslatip beklemek gereksiz.
+
+- YASAK: Ekrani kilitleyen surekli polling. `gh run watch`,
+  `gh run watch --interval N`, dongusel `sleep + gh run view` ve benzeri
+  bloklayici bekleme cagrilari.
+- MESRU: Tetikle -> arka plana birak -> gerektiginde TEK-ATISLIK kontrol:
+  `gh run view <id> --json status,conclusion`. Sonucu raporla, turn'u birak.
+- Kullaniciya haber ver: "Deploy tetiklendi, ~Ndk surer; istersen sonucu
+  tek kontrolle bakarim." Sonucu beklemek yerine kullaniciya birak.
+- Sonuc GERCEKTEN beklenmeli (deploy'a bagli smoke test, migration
+  dogrulamasi): tam yasak degil — periyodik TEK-ATIS kontrol serbest,
+  ekrani kilitleyen surekli watch degil. Bloke edeceksen once kullaniciya
+  soyle, sessizce polling'e girme.
+- Smoke test kurali degismez (yukarida "smoke test zorunlu"): smoke test
+  yine yapilir; degisen sadece deploy'u BEKLEME yontemidir.
+
 ---
 
 ## Rollback Tetikleyicileri

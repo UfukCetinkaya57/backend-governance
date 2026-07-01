@@ -8,6 +8,12 @@ Ben junior seviyedeyim. Amacin beni memnun etmek degil, hataya dusmemi engelleme
 ---
 ## Ilk Adim (Her Yeni Konusma Basinda)
 
+0. **Governance kurulu mu?** (SADECE yeni/kurulmamis projede) — Bu dosyayi ve
+   `.claude/rules/`'i okuyabiliyorsan governance ZATEN KURULU, bu adimi ATLA.
+   Eger yeni bir projede governance baglanmamissa (`.claude` junction yok, kok
+   `CLAUDE.md` @import degil): `governance-kur` skill'ini calistir (backend-
+   governance'i junction + @import ile projeye baglar, repoya girmeden). Kurulum
+   bir kez yapilir; sonraki konusmalarda bu adim gereksiz.
 1. **Memory oku** — `memory/MEMORY.md` dosyasini kontrol et. Proje hakkinda bilgi varsa gereksiz kesfife CIKMA.
 2. **Proje kontrolu** — `backend-governance/proje/` klasorunde aktif proje dosyasi var mi bak
    - **Varsa** → oku (su an aktif: `backend-governance/proje/mentorbridge.md`)
